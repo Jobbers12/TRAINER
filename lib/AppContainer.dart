@@ -44,6 +44,7 @@ class _AppContainerState extends State<AppContainer> {
     return App(
       userID: appState.userID,
       userName: appState.userName,
+      goals: appState.goals,
     );
   }
 }

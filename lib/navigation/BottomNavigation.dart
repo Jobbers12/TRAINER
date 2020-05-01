@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:trainer/models/GoalModel.dart';
 import 'package:trainer/routes/Dashboard.dart';
 import 'package:trainer/routes/Settings.dart';
 import 'package:trainer/routes/Training.dart';
 
 class BottomNavigation extends StatefulWidget {
   final String userName;
+  final List<GoalModel> goals;
 
-  BottomNavigation({this.userName});
+  BottomNavigation({
+    this.userName,
+    this.goals,
+  });
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
@@ -26,7 +31,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     // List of pages (widgets). Indexed for order
     final List<Widget> _children = [
       Dashboard(userName: widget.userName),
-      Training(),
+      Training(goals: widget.goals),
       Settings(),
     ];
 

@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'package:trainer/Enums.dart';
 
 class GoalModel {
@@ -7,7 +9,7 @@ class GoalModel {
   final String goalName;
 
   GoalModel({
-    this.goalID,
+    @required this.goalID,
     this.goalType,
     this.goalSubType,
     this.goalName,

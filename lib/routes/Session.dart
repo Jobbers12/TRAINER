@@ -8,6 +8,7 @@ class Session extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: Scaffold(
         body: Container(
           color: Styles.backgroundColor,
@@ -15,22 +16,41 @@ class Session extends StatelessWidget {
               padding: Styles.globalPagePadding, // Padding for the entire page
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: Styles.headingPadding,
-                        child:
+                  Padding(
+                    padding: Styles.headingPadding,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
                             Text(_getSessionName(), style: Styles.headerLarge),
-                      ),
-                    ],
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Goal Name',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   _timerCard(),
                   Expanded(
-                    flex: 1,
                     child: ListView(
-                      children: <Widget>[
+                      children: [
                         _activityCard(true, 90, ActivityType.run),
                         _activityCard(false, 60, ActivityType.walk),
+                        _activityCard(false, 30, ActivityType.run),
+                        _activityCard(false, 300, ActivityType.walk),
+                        _activityCard(false, 300, ActivityType.walk),
+                        _activityCard(false, 30, ActivityType.run),
+                        _activityCard(false, 300, ActivityType.walk),
+                        _activityCard(false, 300, ActivityType.walk),
+                        _activityCard(false, 30, ActivityType.run),
+                        _activityCard(false, 300, ActivityType.walk),
+                        _activityCard(false, 300, ActivityType.walk),
                         _activityCard(false, 30, ActivityType.run),
                         _activityCard(false, 300, ActivityType.walk),
                         _activityCard(false, 300, ActivityType.walk),
@@ -54,6 +74,7 @@ class Session extends StatelessWidget {
     );
   }
 
+  // Returns the timer card above all activity cards
   Widget _timerCard() {
     return Container(
       child: Card(
@@ -106,34 +127,30 @@ class Session extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  // ICON ****
                   _getActivityIcon(type),
                 ],
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-                child: Expanded(
-                  flex: 10,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            _getActivityType(type),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            _getSubtext(time, type),
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          _getActivityType(type),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          _getSubtext(time, type),
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

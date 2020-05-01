@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'package:trainer/Enums.dart';
 import 'package:trainer/models/GoalModel.dart';
 
@@ -11,7 +13,7 @@ class AppStateModel {
   final List<GoalModel> goals;
 
   AppStateModel({
-    this.userID,
+    @required this.userID,
     this.userName,
     this.userAge,
     this.userWeight,
