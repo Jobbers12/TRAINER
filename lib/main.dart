@@ -34,7 +34,7 @@ class App extends StatelessWidget {
     } else {
       return Container(
         // EXISTING USER
-        child: BottomNavigation(),
+        child: BottomNavigation(userName: userName),
       );
     }
   }

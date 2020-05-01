@@ -4,28 +4,32 @@ import 'package:trainer/routes/Settings.dart';
 import 'package:trainer/routes/Training.dart';
 
 class BottomNavigation extends StatefulWidget {
+  final String userName;
+
+  BottomNavigation({this.userName});
+
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  final String userName;
+  int _currentIndex;
 
-  _BottomNavigationState({
-    this.userName,
-  });
-
-  int _currentIndex = 0;
-
-  // List of pages (widgets). Indexed for order
-  final List<Widget> _children = [
-    Dashboard(userName: userName),
-    Training(),
-    Settings(),
-  ];
+  @override
+  void initState() {
+    _currentIndex = 0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // List of pages (widgets). Indexed for order
+    final List<Widget> _children = [
+      Dashboard(userName: widget.userName),
+      Training(),
+      Settings(),
+    ];
+
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

@@ -16,7 +16,7 @@ class _AppContainerState extends State<AppContainer> {
   void initState() {
     appState = AppStateModel(
       userID: '123',
-      userName: 'John',
+      userName: 'Jake',
       userAge: 24,
       userWeight: 73.0,
       userGender: Gender.male,
@@ -26,6 +26,12 @@ class _AppContainerState extends State<AppContainer> {
           goalName: '5K BBY!',
           goalType: GoalType.run,
           goalSubType: GoalSubType.five,
+        ),
+        GoalModel(
+          goalID: '456abc',
+          goalName: '10K DOLL!',
+          goalType: GoalType.run,
+          goalSubType: GoalSubType.ten,
         ),
       ],
     );
