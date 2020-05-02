@@ -13,28 +13,26 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: Styles.globalPagePadding,
         color: Styles.backgroundColor,
-        child: Padding(
-          padding: Styles.globalPagePadding, // Padding for the entire page
-          child: Column(
-            // Main page column
-            children: <Widget>[
-              Row(
-                children: [
-                  Padding(
-                    padding: Styles.headingPadding,
-                    child: Text('Dashboard', style: Styles.headerLarge),
-                  )
-                ],
+        child: Column(
+          // Main page column
+          children: <Widget>[
+            Row(
+              children: [
+                Padding(
+                  padding: Styles.headingPadding,
+                  child: Text('Dashboard', style: Styles.headerLarge),
+                )
+              ],
+            ),
+            Expanded(
+              flex: 1,
+              child: ListView(
+                children: [_greetingCard()],
               ),
-              Expanded(
-                flex: 1,
-                child: ListView(
-                  children: [_greetingCard()],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

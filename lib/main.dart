@@ -14,9 +14,7 @@ class TopApp extends StatelessWidget {
     return MaterialApp(
       title: 'TRAINER',
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        bottom: false, 
-        child: AppContainer()),
+      home: AppContainer(),
     );
   }
 }

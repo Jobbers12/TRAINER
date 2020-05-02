@@ -5,71 +5,74 @@ import 'package:trainer/styles/Styles.dart';
 import 'package:intl/intl.dart';
 
 class Session extends StatelessWidget {
+  final String goalName;
+
+  Session({
+    this.goalName,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        body: Container(
-          color: Styles.backgroundColor,
-          child: Padding(
-              padding: Styles.globalPagePadding, // Padding for the entire page
-              child: Column(
-                children: [
-                  Padding(
-                    padding: Styles.headingPadding,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(_getSessionName(), style: Styles.headerLarge),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Goal Name',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  _timerCard(),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        _activityCard(true, 90, ActivityType.run),
-                        _activityCard(false, 60, ActivityType.walk),
-                        _activityCard(false, 30, ActivityType.run),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 30, ActivityType.run),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 30, ActivityType.run),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 30, ActivityType.run),
-                        _activityCard(false, 300, ActivityType.walk),
-                        _activityCard(false, 300, ActivityType.walk),
-                      ],
-                    ),
-                  ),
-                  Row(
+    return Scaffold(
+      body: Container(
+        color: Styles.backgroundColor,
+        child: Padding(
+            padding: Styles.globalPagePadding, // Padding for the entire page
+            child: Column(
+              children: [
+                Padding(
+                  padding: Styles.headingPadding,
+                  child: Column(
                     children: [
-                      RaisedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('BACK'),
+                      Row(
+                        children: [
+                          Text(_getSessionName(), style: Styles.headerLarge),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            goalName,
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
                       ),
                     ],
-                  )
-                ],
-              )),
-        ),
+                  ),
+                ),
+                _timerCard(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _activityCard(true, 90, ActivityType.run),
+                      _activityCard(false, 60, ActivityType.walk),
+                      _activityCard(false, 30, ActivityType.run),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 30, ActivityType.run),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 30, ActivityType.run),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 30, ActivityType.run),
+                      _activityCard(false, 300, ActivityType.walk),
+                      _activityCard(false, 300, ActivityType.walk),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    RaisedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('BACK'),
+                    ),
+                  ],
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -163,7 +166,7 @@ class Session extends StatelessWidget {
   // Returns background color of the activity
   Color _getActivityColor(bool active) {
     if (active == true) {
-      return Colors.green[100];
+      return Styles.activeColor;
     } else {
       return Colors.grey[350];
     }

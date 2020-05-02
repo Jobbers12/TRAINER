@@ -8,8 +8,10 @@ class Styles {
   static final Color headerColor = Colors.grey[900]; // Header text color
   static final Color _textColorDefault = _hexToColor('000000'); // Default text color
   static final Color backgroundColor = Colors.grey[200]; // App backgound colour
+  static final Color activeColor = Colors.green[100];
+
   
-  static const EdgeInsets globalPagePadding = EdgeInsets.all(16.0); // Padding for the entire page
+  static const EdgeInsets globalPagePadding = EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 16.0); // Padding for the entire page
   static const EdgeInsets headingPadding = EdgeInsets.fromLTRB(0, 8.0, 0, 16.0);
 
 

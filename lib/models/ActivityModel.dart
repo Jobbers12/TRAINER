@@ -1,11 +1,13 @@
 import 'package:trainer/Enums.dart';
 
 class ActivityModel {
+  final String activityID;
   final ActivityType activityType; // Eg walk, run, warmup, etc
-  final int time; // Duration of an activity
+  final int activityTime; // Duration of an activity
 
   ActivityModel({
+    this.activityID,
     this.activityType,
-    this.time,
+    this.activityTime,
   });
 }
