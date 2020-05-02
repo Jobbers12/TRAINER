@@ -3,11 +3,11 @@ import 'package:trainer/mocks/MockImages.dart';
 import 'package:trainer/styles/Styles.dart';
 
 class Dashboard extends StatelessWidget {
-final String userName;
+  final String userName;
 
-Dashboard({
-  this.userName,
-});
+  Dashboard({
+    this.userName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,11 @@ Dashboard({
                   )
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(flex: 1, child: _greetingCard()),
-                ],
+              Expanded(
+                flex: 1,
+                child: ListView(
+                  children: [_greetingCard()],
+                ),
               ),
             ],
           ),
@@ -54,7 +55,8 @@ Dashboard({
                 Positioned(
                   bottom: 8.0,
                   right: 8.0,
-                  child: Text(_greeting() + userName, style: Styles.headerMedium),
+                  child:
+                      Text(_greeting() + userName, style: Styles.headerMedium),
                 ),
               ],
             ),

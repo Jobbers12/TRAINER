@@ -31,12 +31,16 @@ class Training extends StatelessWidget {
               ),
               Expanded(
                 child: ListView(
-                  children: [
-                    goals
-                        .map((item) => _goalCard(context, item.goalID,
-                            item.goalName, item.goalType, item.goalSubType))
-                        .toList(),
-                  ],
+                  children: goals
+                      .map((item) => GoalCard(
+                            goalID: item.goalID,
+                            goalName: item.goalName,
+                            goalType: item.goalType,
+                            goalSubType: item.goalSubType,
+                          ))
+                      .toList(),
+
+                  //_goalCard(context, 'abc123', 'ANOTHER RUN', GoalType.run, GoalSubType.five)
                 ),
               ),
             ],
@@ -52,59 +56,6 @@ class Training extends StatelessWidget {
       ),
     );
   }
-}
-
-// Returns a goal card with given values
-Widget _goalCard(BuildContext context, String goalID, String goalName,
-    GoalType goalType, GoalSubType goalSubType) {
-  return Card(
-    child: InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Session()));
-      },
-      child: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Column(
-                children: [_getGoalIcon(goalType)],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          goalName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          _getSubText(goalSubType),
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey[600],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
 }
 
 // Returns icon for the goal
@@ -142,5 +93,74 @@ _getSubText(GoalSubType subtype) {
       return 'Lets become a trail runner' + suffix;
       break;
     default:
+  }
+}
+
+// GoalCard Widget. Creates a card for each goal based on GoalModel
+class GoalCard extends StatelessWidget {
+  final String goalID;
+  final String goalName;
+  final GoalType goalType;
+  final GoalSubType goalSubType;
+
+  GoalCard({
+    this.goalID,
+    this.goalName,
+    this.goalType,
+    this.goalSubType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              // TODO: Open correct session based on goalID. Need to work out how sessions are generated first.
+              context,
+              MaterialPageRoute(builder: (context) => Session()));
+        },
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Column(
+                  children: [_getGoalIcon(goalType)],
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            goalName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            _getSubText(goalSubType),
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.grey[600],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -28,7 +28,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    // List of pages (widgets). Indexed for order
+    // List of routes. Indexed for order
     final List<Widget> _children = [
       Dashboard(userName: widget.userName),
       Training(goals: widget.goals),

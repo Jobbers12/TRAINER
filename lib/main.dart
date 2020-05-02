@@ -13,6 +13,7 @@ class TopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TRAINER',
+      debugShowCheckedModeBanner: false,
       home: SafeArea(
         bottom: false, 
         child: AppContainer()),
@@ -22,12 +23,14 @@ class TopApp extends StatelessWidget {
 
 class App extends StatelessWidget {
   final String userID;
+  final bool userFirstTimeUse;
   final String userName;
 
   final List<GoalModel> goals;
 
   App({
     this.userID,
+    this.userFirstTimeUse,
     this.userName,
     this.goals,
   });
@@ -35,8 +38,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (userID == '') {
-      // NEW USER
-      return Text('NEW USER');
+      if (userFirstTimeUse == true) {
+        // NEW USER
+        // TODO: SET STATE FOR userFirstTimeUse
+        return Text('New user');
+      } else {
+        // USER NOT LOGGED IN
+        return Text('User not logged in');
+      }
+      
     } else {
       return Container(
         // EXISTING USER

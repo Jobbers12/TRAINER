@@ -5,6 +5,7 @@ import 'package:trainer/models/GoalModel.dart';
 
 class AppStateModel {
   final String userID;
+  final bool userFirstTimeUse;
   final String userName;
   final int userAge;
   final double userWeight;
@@ -14,6 +15,7 @@ class AppStateModel {
 
   AppStateModel({
     @required this.userID,
+    this.userFirstTimeUse,
     this.userName,
     this.userAge,
     this.userWeight,
@@ -23,6 +25,7 @@ class AppStateModel {
 
   AppStateModel copyWith({
     String userID,
+    bool userFirstTimeUse,
     String userName,
     int userAge,
     double userWeight,
@@ -31,6 +34,7 @@ class AppStateModel {
   }) {
     return AppStateModel(
       userID: userID ?? this.userID,
+      userFirstTimeUse: userFirstTimeUse ?? this.userFirstTimeUse,
       userName: userName ?? this.userName,
       userAge: userAge ?? this.userAge,
       userWeight: userWeight ?? this.userWeight,

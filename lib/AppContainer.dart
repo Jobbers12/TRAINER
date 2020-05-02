@@ -16,6 +16,7 @@ class _AppContainerState extends State<AppContainer> {
   void initState() {
     appState = AppStateModel(
       userID: '123',
+      userFirstTimeUse: false,
       userName: 'Jake',
       userAge: 24,
       userWeight: 73.0,
@@ -43,8 +44,12 @@ class _AppContainerState extends State<AppContainer> {
   Widget build(BuildContext context) {
     return App(
       userID: appState.userID,
+      userFirstTimeUse: appState.userFirstTimeUse,
       userName: appState.userName,
       goals: appState.goals,
     );
   }
 }
+
+Widget _goalCard(BuildContext context, String goalID, String goalName,
+    GoalType goalType, GoalSubType goalSubType) {
