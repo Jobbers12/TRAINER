@@ -29,6 +29,7 @@ class Dashboard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListView(
+                padding: EdgeInsets.all(0.0),
                 children: [_greetingCard()],
               ),
             ),

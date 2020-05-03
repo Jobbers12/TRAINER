@@ -31,6 +31,7 @@ class Training extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
+                padding: EdgeInsets.all(0.0),
                 children: goals
                     .map((item) => GoalCard(
                           goalID: item.goalID,

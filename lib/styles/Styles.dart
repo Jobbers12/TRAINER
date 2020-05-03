@@ -9,6 +9,7 @@ class Styles {
   static final Color _textColorDefault = _hexToColor('000000'); // Default text color
   static final Color backgroundColor = Colors.grey[200]; // App backgound colour
   static final Color activeColor = Colors.green[100];
+  static final Color inActiveColor = Colors.grey[350];
 
   
   static const EdgeInsets globalPagePadding = EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 16.0); // Padding for the entire page

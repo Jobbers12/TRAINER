@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainer/Enums.dart';
+import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/styles/Styles.dart';
 
 import 'package:intl/intl.dart';
@@ -7,8 +8,11 @@ import 'package:intl/intl.dart';
 class Session extends StatelessWidget {
   final String goalName;
 
+  final List<ActivityModel> activities;
+
   Session({
     this.goalName,
+    this.activities,
   });
 
   @override
@@ -41,26 +45,7 @@ class Session extends StatelessWidget {
                   ),
                 ),
                 _timerCard(),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      _activityCard(true, 90, ActivityType.run),
-                      _activityCard(false, 60, ActivityType.walk),
-                      _activityCard(false, 30, ActivityType.run),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 30, ActivityType.run),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 30, ActivityType.run),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 30, ActivityType.run),
-                      _activityCard(false, 300, ActivityType.walk),
-                      _activityCard(false, 300, ActivityType.walk),
-                    ],
-                  ),
-                ),
+                _getActivityCardList(activities),
                 Row(
                   children: [
                     RaisedButton(
@@ -75,6 +60,28 @@ class Session extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  // Generates a list of activity cards for the selected session. Ensures that there are activities within the session
+  _getActivityCardList(List<ActivityModel> activities) {
+    if (activities == null) {
+      return NoActivitiesAvaliable();
+    } else {
+      return Expanded(
+        child: ListView(
+          padding: EdgeInsets.all(0.0),
+          children: activities
+              .map(
+                (activity) => ActivityCard(
+                  activityActive: activity.activityActive,
+                  activityTime: activity.activityTime,
+                  activityType: activity.activityType,
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
   }
 
   // Returns the timer card above all activity cards
@@ -119,18 +126,40 @@ class Session extends StatelessWidget {
     );
   }
 
-  // Returns an activity card with given values
-  Widget _activityCard(bool active, int time, ActivityType type) {
+  // Returns the name of the session using the day
+  String _getSessionName() {
+    var day = DateTime.now();
+
+    String dayName = DateFormat('EEEE').format(day);
+
+    return dayName + ' Session';
+  }
+}
+
+// Returns an activity card with given values
+class ActivityCard extends StatelessWidget {
+  final bool activityActive;
+  final int activityTime;
+  final ActivityType activityType;
+
+  ActivityCard({
+    this.activityActive,
+    this.activityTime,
+    this.activityType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Card(
-        color: _getActivityColor(active),
+        color: _getActivityColor(activityActive),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
               Column(
                 children: [
-                  _getActivityIcon(type),
+                  _getActivityIcon(activityType),
                 ],
               ),
               Padding(
@@ -140,7 +169,7 @@ class Session extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          _getActivityType(type),
+                          _getActivityType(activityType),
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -148,7 +177,7 @@ class Session extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          _getSubtext(time, type),
+                          _getSubtext(activityTime, activityType),
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ],
@@ -164,11 +193,11 @@ class Session extends StatelessWidget {
   }
 
   // Returns background color of the activity
-  Color _getActivityColor(bool active) {
-    if (active == true) {
+  Color _getActivityColor(bool activityActive) {
+    if (activityActive == true) {
       return Styles.activeColor;
     } else {
-      return Colors.grey[350];
+      return Styles.inActiveColor;
     }
   }
 
@@ -303,13 +332,43 @@ class Session extends StatelessWidget {
           activityType;
     }
   }
+}
 
-  // Returns the name of the session using the day
-  String _getSessionName() {
-    var day = DateTime.now();
-
-    String dayName = DateFormat('EEEE').format(day);
-
-    return dayName + ' Session';
+// Used if there is no activies within the selected session
+class NoActivitiesAvaliable extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red[200],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Column(
+              children: [
+                Icon(Icons.error, size: 40),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'There are no activities within this session',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

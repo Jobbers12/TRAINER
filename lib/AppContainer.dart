@@ -33,93 +33,111 @@ class _AppContainerState extends State<AppContainer> {
             SessionModel(
               sessionID: 'a',
               sessionDate: DateTime.utc(2020, 12, 01),
+              sessionComplete: true,
               activities: <ActivityModel>[
                 ActivityModel(
                   activityID: 'a',
                   activityType: ActivityType.warmup,
                   activityTime: 300,
+                  activityActive: true,
                 ),
                 ActivityModel(
                   activityID: 'b',
                   activityType: ActivityType.run,
                   activityTime: 90,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'c',
                   activityType: ActivityType.walk,
                   activityTime: 120,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'd',
                   activityType: ActivityType.run,
                   activityTime: 120,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'e',
                   activityType: ActivityType.cooldown,
                   activityTime: 300,
+                  activityActive: false,
                 ),
               ],
             ),
             SessionModel(
               sessionID: 'b',
               sessionDate: DateTime.utc(2020, 12, 02),
+              sessionComplete: false,
               activities: <ActivityModel>[
                 ActivityModel(
                   activityID: 'a',
-                  activityType: ActivityType.warmup,
+                  activityType: ActivityType.jog,
                   activityTime: 300,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'b',
                   activityType: ActivityType.run,
                   activityTime: 90,
+                  activityActive: true,
                 ),
                 ActivityModel(
                   activityID: 'c',
                   activityType: ActivityType.walk,
                   activityTime: 120,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'd',
                   activityType: ActivityType.run,
                   activityTime: 120,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'e',
                   activityType: ActivityType.cooldown,
                   activityTime: 300,
+                  activityActive: false,
                 ),
               ],
             ),
             SessionModel(
               sessionID: 'c',
               sessionDate: DateTime.utc(2020, 12, 03),
+              sessionComplete: false,
               activities: <ActivityModel>[
                 ActivityModel(
                   activityID: 'a',
-                  activityType: ActivityType.warmup,
+                  activityType: ActivityType.sprint,
                   activityTime: 300,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'b',
                   activityType: ActivityType.run,
                   activityTime: 90,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'c',
                   activityType: ActivityType.walk,
                   activityTime: 120,
+                  activityActive: true,
                 ),
                 ActivityModel(
                   activityID: 'd',
                   activityType: ActivityType.run,
                   activityTime: 120,
+                  activityActive: false,
                 ),
                 ActivityModel(
                   activityID: 'e',
                   activityType: ActivityType.cooldown,
                   activityTime: 300,
+                  activityActive: false,
                 ),
               ],
             ),

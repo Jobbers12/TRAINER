@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/SessionModel.dart';
 import 'package:trainer/routes/Session.dart';
 import 'package:trainer/styles/Styles.dart';
@@ -57,34 +58,49 @@ class SessionsViewer extends StatelessWidget {
       ),
     );
   }
-}
 
-// Generates a list of session cards for the selected goal. Ensures that the goal actually has sessions generated.
-_getSessionsCardList(List<SessionModel> sessions, String goalName) {
-  if (sessions == null) {
-    return NoSessionsAvaliable();
-  } else {
-    return Expanded(
-      child: ListView(
-        children: sessions
-            .map((item) => SessionCard(
+  // Generates a list of session cards for the selected goal. Ensures that the goal actually has sessions generated.
+  _getSessionsCardList(List<SessionModel> sessions, String goalName) {
+    if (sessions == null) {
+      return NoSessionsAvaliable();
+    } else {
+      SessionModel activeSessionModel =
+          sessions.firstWhere((s) => s.sessionComplete == false);
+
+      return Expanded(
+        child: ListView(
+          padding: EdgeInsets.all(0.0),
+          children: sessions
+              .map(
+                (item) => SessionCard(
+                  sessionID: item.sessionID,
                   sessionDate: item.sessionDate,
                   goalName: goalName,
-                ))
-            .toList(),
-      ),
-    );
+                  activities: item.activities,
+                  activeSession: activeSessionModel,
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
   }
 }
 
 // SessionCard Widget. Creates a card for each session within a users goal
 class SessionCard extends StatelessWidget {
+  final List<ActivityModel> activities;
   final DateTime sessionDate;
   final String goalName;
+  final SessionModel activeSession;
+  final String sessionID;
 
   SessionCard({
+    this.activities,
     this.sessionDate,
     this.goalName,
+    this.activeSession,
+    this.sessionID,
   });
 
   @override
@@ -97,11 +113,15 @@ class SessionCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Session(goalName: goalName)),
+              builder: (context) => Session(
+                goalName: goalName,
+                activities: activities,
+              ),
+            ),
           );
         },
         child: Container(
-          color: Styles.activeColor,
+          color: _getCardColor(sessionID, activeSession),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -125,11 +145,10 @@ class SessionCard extends StatelessWidget {
                           )
                         ],
                       ),
-                      // TODO: Automate time & distance estimate on session cards
                       Row(
                         children: [
                           Text(
-                            '34 mins | 2.7km ',
+                            _getSubText(),
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               color: Colors.grey[600],
@@ -146,6 +165,19 @@ class SessionCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // TODO: Determines the time & distance estimate on session cards
+  String _getSubText() {
+    return '34 mins | 1.7km';
+  }
+
+  // Returns the correct bg color for cards based on current session
+  Color _getCardColor(String sessionID, SessionModel activeSession) {
+    if (sessionID == activeSession.sessionID) {
+      return Styles.activeColor;
+    }
+    return Styles.inActiveColor;
   }
 }
 
