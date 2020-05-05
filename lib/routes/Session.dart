@@ -372,3 +372,4 @@ class NoActivitiesAvaliable extends StatelessWidget {
     );
   }
 }
+

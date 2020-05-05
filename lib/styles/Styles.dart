@@ -12,7 +12,7 @@ class Styles {
   static final Color inActiveColor = Colors.grey[350];
 
   
-  static const EdgeInsets globalPagePadding = EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 16.0); // Padding for the entire page
+  static const EdgeInsets globalPagePadding = EdgeInsets.fromLTRB(16.0, 48.0, 16.0, 16.0); // Padding for the entire page
   static const EdgeInsets headingPadding = EdgeInsets.fromLTRB(0, 8.0, 0, 16.0);
 
 

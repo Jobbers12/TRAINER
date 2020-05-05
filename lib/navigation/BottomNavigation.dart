@@ -42,7 +42,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         currentIndex: _currentIndex,
         items: [
           new BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.dashboard),
             title: Text('Dashboard'),
           ),
           new BottomNavigationBarItem(

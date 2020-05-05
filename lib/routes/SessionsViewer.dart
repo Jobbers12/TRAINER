@@ -78,6 +78,7 @@ class SessionsViewer extends StatelessWidget {
                   goalName: goalName,
                   activities: item.activities,
                   activeSession: activeSessionModel,
+                  sessionComplete: item.sessionComplete,
                 ),
               )
               .toList(),
@@ -94,6 +95,7 @@ class SessionCard extends StatelessWidget {
   final String goalName;
   final SessionModel activeSession;
   final String sessionID;
+  final bool sessionComplete;
 
   SessionCard({
     this.activities,
@@ -101,6 +103,7 @@ class SessionCard extends StatelessWidget {
     this.goalName,
     this.activeSession,
     this.sessionID,
+    this.sessionComplete,
   });
 
   @override
@@ -128,7 +131,7 @@ class SessionCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Icon(Icons.directions_run, size: 40),
+                    _getSessionIcon(sessionComplete),
                   ],
                 ),
                 Padding(
@@ -178,6 +181,14 @@ class SessionCard extends StatelessWidget {
       return Styles.activeColor;
     }
     return Styles.inActiveColor;
+  }
+
+  // Returns the correc icon based on compelted sesions
+  Icon _getSessionIcon(bool sessionComplete) {
+    if (sessionComplete == true) {
+      return Icon(Icons.check_circle, size: 40);
+    }
+    return Icon(Icons.indeterminate_check_box, size: 40);
   }
 }
 
