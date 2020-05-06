@@ -79,6 +79,7 @@ class SessionsViewer extends StatelessWidget {
                   activities: item.activities,
                   activeSession: activeSessionModel,
                   sessionComplete: item.sessionComplete,
+                  sessionRunning: item.sessionRunning,
                 ),
               )
               .toList(),
@@ -96,6 +97,7 @@ class SessionCard extends StatelessWidget {
   final SessionModel activeSession;
   final String sessionID;
   final bool sessionComplete;
+  final bool sessionRunning;
 
   SessionCard({
     this.activities,
@@ -104,6 +106,7 @@ class SessionCard extends StatelessWidget {
     this.activeSession,
     this.sessionID,
     this.sessionComplete,
+    this.sessionRunning,
   });
 
   @override
@@ -118,6 +121,7 @@ class SessionCard extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => Session(
                 goalName: goalName,
+                sessionRunning: sessionRunning,
                 activities: activities,
               ),
             ),
@@ -151,7 +155,7 @@ class SessionCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            _getSubText(),
+                            _getSubText(activities),
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               color: Colors.grey[600],
@@ -170,9 +174,17 @@ class SessionCard extends StatelessWidget {
     );
   }
 
-  // TODO: Determines the time & distance estimate on session cards
-  String _getSubText() {
-    return '34 mins | 1.7km';
+  // Returns subText based on time & distance estimate
+  String _getSubText(List<ActivityModel> activities) {
+    List<int> activityTimes = activities.map((e) => e.activityTime).toList();
+
+    int seconds = activityTimes.reduce((value, element) => value + element);
+    int mins = (seconds / 60).round();
+
+    double distance = (mins / 6);
+    
+
+    return mins.toString() + ' mins | ' + distance.toStringAsFixed(2) + 'km';
   }
 
   // Returns the correct bg color for cards based on current session

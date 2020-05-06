@@ -38,7 +38,7 @@ class _AppContainerState extends State<AppContainer> {
                 ActivityModel(
                   activityID: 'a',
                   activityType: ActivityType.warmup,
-                  activityTime: 300,
+                  activityTime: 10,
                   activityActive: true,
                 ),
                 ActivityModel(

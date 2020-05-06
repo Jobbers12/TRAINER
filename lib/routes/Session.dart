@@ -8,10 +8,12 @@ import 'package:intl/intl.dart';
 class Session extends StatelessWidget {
   final String goalName;
 
+  final bool sessionRunning;
   final List<ActivityModel> activities;
 
   Session({
     this.goalName,
+    this.sessionRunning,
     this.activities,
   });
 
@@ -21,43 +23,55 @@ class Session extends StatelessWidget {
       body: Container(
         color: Styles.backgroundColor,
         child: Padding(
-            padding: Styles.globalPagePadding, // Padding for the entire page
-            child: Column(
-              children: [
-                Padding(
-                  padding: Styles.headingPadding,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(_getSessionName(), style: Styles.headerLarge),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            goalName,
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                _timerCard(),
-                _getActivityCardList(activities),
-                Row(
+          padding: Styles.globalPagePadding, // Padding for the entire page
+          child: Column(
+            children: [
+              Padding(
+                padding: Styles.headingPadding,
+                child: Column(
                   children: [
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('BACK'),
+                    Row(
+                      children: [
+                        Text(_getSessionName(), style: Styles.headerLarge),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          goalName,
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            )),
+              ),
+              TimerCard(),
+              _getActivityCardList(activities),
+              ButtonBar(
+                children: [
+                  FlatButton(
+                    child: Text('Back'),
+                    color: Colors.green,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Pause'),
+                    color: Colors.green,
+                    onPressed: () {},
+                  ),
+                  FlatButton(
+                    child: Text('Start'),
+                    color: Colors.green,
+                    onPressed: () {},
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -84,48 +98,6 @@ class Session extends StatelessWidget {
     }
   }
 
-  // Returns the timer card above all activity cards
-  Widget _timerCard() {
-    return Container(
-      child: Card(
-        color: Colors.blue[200],
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Column(
-                children: [
-                  // ICON ****
-                  Icon(Icons.timer, size: 40),
-                ],
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "00:00:00",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   // Returns the name of the session using the day
   String _getSessionName() {
     var day = DateTime.now();
@@ -137,6 +109,7 @@ class Session extends StatelessWidget {
 }
 
 // Returns an activity card with given values
+// TODO: Convert to stateful widget to get backgorund color working correctly??
 class ActivityCard extends StatelessWidget {
   final bool activityActive;
   final int activityTime;
@@ -334,6 +307,45 @@ class ActivityCard extends StatelessWidget {
   }
 }
 
+class TimerCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Card(
+        color: Colors.blue[200],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Icon(Icons.timer, size: 40),
+                ],
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            //_timer(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // Used if there is no activies within the selected session
 class NoActivitiesAvaliable extends StatelessWidget {
   @override
@@ -373,3 +385,18 @@ class NoActivitiesAvaliable extends StatelessWidget {
   }
 }
 
+// Widget _timer() {
+//   return CountdownFormatted(
+//     duration: Duration(seconds: _scheduler()),
+//     //onFinish: lol(),
+//     builder: (BuildContext ctx, String remaining) {
+//       return Text(
+//         remaining,
+//         style: TextStyle(
+//           fontWeight: FontWeight.bold,
+//           fontSize: 30,
+//         ),
+//       );
+//     },
+//   );
+// }
