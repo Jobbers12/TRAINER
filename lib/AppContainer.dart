@@ -17,8 +17,8 @@ class _AppContainerState extends State<AppContainer> {
   @override
   void initState() {
     appState = AppStateModel(
-      userID: '123',
-      userFirstTimeUse: false,
+      userID: '',
+      userFirstTimeUse: true,
       userName: 'Jake',
       userAge: 24,
       userWeight: 73.0,
@@ -159,9 +159,20 @@ class _AppContainerState extends State<AppContainer> {
   Widget build(BuildContext context) {
     return App(
       userID: appState.userID,
-      userFirstTimeUse: appState.userFirstTimeUse,
       userName: appState.userName,
       goals: appState.goals,
+      userFirstTimeUse: appState.userFirstTimeUse,
+      onFirstTimeUse: () => _handleFirstTimeUse(),
     );
+  }
+
+  // Set State after user has loaded the app for the first time
+  _handleFirstTimeUse() {
+    setState(() {
+      appState = appState.copyWith(
+        userFirstTimeUse: false,
+        userID: '1',
+      );
+    });
   }
 }
