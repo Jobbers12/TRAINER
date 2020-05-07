@@ -5,6 +5,8 @@ import 'package:trainer/styles/Styles.dart';
 
 import 'package:intl/intl.dart';
 
+_TimerCardState _state;
+
 class Session extends StatelessWidget {
   final String goalName;
 
@@ -46,7 +48,9 @@ class Session extends StatelessWidget {
                   ],
                 ),
               ),
-              TimerCard(),
+              TimerCard(
+                activities: activities,
+              ),
               _getActivityCardList(activities),
               ButtonBar(
                 children: [
@@ -54,27 +58,44 @@ class Session extends StatelessWidget {
                     child: Text('Back'),
                     color: Colors.green,
                     onPressed: () {
+                      _stopTimer();
                       Navigator.pop(context);
                     },
                   ),
                   FlatButton(
                     child: Text('Pause'),
                     color: Colors.green,
-                    onPressed: () {},
+                    onPressed: () {
+                      _pauseTimer();
+                    },
                   ),
                   FlatButton(
-                    child: Text('Start'),
-                    color: Colors.green,
-                    onPressed: () {},
-                  ),
+                      child: Text('Start'),
+                      color: Colors.green,
+                      onPressed: () {
+                        _startTimer();
+                      }),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  // Handles the start of the timer
+  _startTimer() {
+    _state.startTimer();
+  }
+
+  // Handles the pause of the timer
+  _pauseTimer() {
+    _state.pauseTimer();
+  }
+
+  // Handles the stop of the timer
+  _stopTimer() {}
 
   // Generates a list of activity cards for the selected session. Ensures that there are activities within the session
   _getActivityCardList(List<ActivityModel> activities) {
@@ -109,7 +130,6 @@ class Session extends StatelessWidget {
 }
 
 // Returns an activity card with given values
-// TODO: Convert to stateful widget to get backgorund color working correctly??
 class ActivityCard extends StatelessWidget {
   final bool activityActive;
   final int activityTime;
@@ -307,7 +327,74 @@ class ActivityCard extends StatelessWidget {
   }
 }
 
-class TimerCard extends StatelessWidget {
+// Returns Timer Widget
+class TimerCard extends StatefulWidget {
+  final List<ActivityModel> activities;
+
+  TimerCard({
+    this.activities,
+  });
+
+  @override
+  _TimerCardState createState() {
+    _state = _TimerCardState();
+    return _state;
+  }
+}
+
+class _TimerCardState extends State<TimerCard> with TickerProviderStateMixin {
+  AnimationController controller;
+  bool isRunning = false;
+
+  List<int> activityTimes;
+  int activitiesRun;
+  int activitiesTotal;
+
+  String get timerString {
+    Duration duration = controller.duration * controller.value;
+    if (isRunning == true) {
+      return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+    }
+    return '...';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create list of activity times
+    activityTimes = widget.activities.map((e) => e.activityTime).toList();
+    activitiesTotal = activityTimes.length;
+
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: activityTimes[0] + 1),
+    );
+
+    controller.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.dismissed) {
+        if (activitiesRun < activitiesTotal) {
+          controller.duration =
+              Duration(seconds: activityTimes[activitiesRun] + 1);
+          controller.reverse(
+              from: controller.value == 0.0 ? 1.0 : controller.value);
+          activitiesRun++;
+        } else {
+          // SESSION COMPLETE
+            isRunning = false;
+          return;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    isRunning = false;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -330,7 +417,16 @@ class TimerCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            //_timer(),
+                            AnimatedBuilder(
+                              animation: controller,
+                              builder: (BuildContext context, Widget child) {
+                                return Text(timerString,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 32,
+                                    ));
+                              },
+                            ),
                           ],
                         ),
                       ],
@@ -343,6 +439,29 @@ class TimerCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Start the timer animation
+  startTimer() {
+    activitiesRun = 1;
+    isRunning = true;
+
+    if (controller.isAnimating) {
+      return;
+      //controller.stop(canceled: true);
+    } else {
+      controller.reverse(
+          from: controller.value == 0.0 ? 1.0 : controller.value);
+    }
+  }
+
+// Pause the timer animation
+  pauseTimer() {
+    if (controller.isAnimating) {
+      controller.stop(canceled: true);
+    } else {
+      return;
+    }
   }
 }
 
@@ -384,19 +503,3 @@ class NoActivitiesAvaliable extends StatelessWidget {
     );
   }
 }
-
-// Widget _timer() {
-//   return CountdownFormatted(
-//     duration: Duration(seconds: _scheduler()),
-//     //onFinish: lol(),
-//     builder: (BuildContext ctx, String remaining) {
-//       return Text(
-//         remaining,
-//         style: TextStyle(
-//           fontWeight: FontWeight.bold,
-//           fontSize: 30,
-//         ),
-//       );
-//     },
-//   );
-// }
