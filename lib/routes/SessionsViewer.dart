@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:trainer/SessionContainer.dart';
 import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/SessionModel.dart';
-import 'package:trainer/routes/Session.dart';
 import 'package:trainer/styles/Styles.dart';
 
 class SessionsViewer extends StatelessWidget {

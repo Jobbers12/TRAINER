@@ -176,23 +176,4 @@ class _AppContainerState extends State<AppContainer> {
       );
     });
   }
-
-  _handleActiveActivity(int currentIndex) {
-    int lastIndex;
-
-    if (currentIndex == 0) {
-      // First activity
-      setState(() {
-        appState = appState.copyWith(
-          
-        );
-      });
-    } else {
-      // After first activity
-      lastIndex = currentIndex - 1;
-    }
-    setState(() {
-      appState = appState.copyWith();
-    });
-  }
 }

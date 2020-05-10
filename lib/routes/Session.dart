@@ -113,9 +113,6 @@ class Session extends StatelessWidget {
     onPausePressed();
   }
 
-  // Handles the stop of the timer
-  _stopTimer() {}
-
   // Generates a list of activity cards for the selected session. Ensures that there are activities within the session
   _getActivityCardList(List<ActivityModel> activities) {
     if (activities == null) {

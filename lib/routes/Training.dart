@@ -48,7 +48,7 @@ class Training extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Add goal button
+         
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
@@ -79,7 +79,6 @@ class GoalCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-            // TODO: Open correct session based on goalID. Need to work out how sessions are generated first.
             context,
             MaterialPageRoute(
               builder: (context) => SessionsViewer(goalName: goalName, sessions: sessions)
