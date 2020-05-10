@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trainer/SessionContainer.dart';
 import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/SessionModel.dart';
 import 'package:trainer/routes/Session.dart';
@@ -119,7 +120,7 @@ class SessionCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Session(
+              builder: (context) => SessionContainer(
                 goalName: goalName,
                 sessionRunning: sessionRunning,
                 activities: activities,

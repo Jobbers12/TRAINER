@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trainer/Enums.dart';
+import 'package:trainer/audio/Audio.dart';
 import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/styles/Styles.dart';
-
-import 'package:intl/intl.dart';
-
-_TimerCardState _state;
 
 class Session extends StatelessWidget {
   final String goalName;
@@ -13,10 +10,25 @@ class Session extends StatelessWidget {
   final bool sessionRunning;
   final List<ActivityModel> activities;
 
+  final AnimationController controller;
+  final String timerString;
+
+  final String sessionName;
+
+  final dynamic onBackPressed;
+  final dynamic onStartPressed;
+  final dynamic onPausePressed;
+
   Session({
     this.goalName,
     this.sessionRunning,
     this.activities,
+    this.controller,
+    this.timerString,
+    this.sessionName,
+    this.onBackPressed,
+    this.onStartPressed,
+    this.onPausePressed,
   });
 
   @override
@@ -34,7 +46,7 @@ class Session extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(_getSessionName(), style: Styles.headerLarge),
+                        Text(sessionName, style: Styles.headerLarge),
                       ],
                     ),
                     Row(
@@ -49,7 +61,8 @@ class Session extends StatelessWidget {
                 ),
               ),
               TimerCard(
-                activities: activities,
+                controller: controller,
+                timerString: timerString,
               ),
               _getActivityCardList(activities),
               ButtonBar(
@@ -58,23 +71,25 @@ class Session extends StatelessWidget {
                     child: Text('Back'),
                     color: Colors.green,
                     onPressed: () {
-                      _stopTimer();
-                      Navigator.pop(context);
+                      //_stopTimer();
+                      _handleBackPressed();
                     },
                   ),
                   FlatButton(
                     child: Text('Pause'),
                     color: Colors.green,
                     onPressed: () {
-                      _pauseTimer();
+                      _handlePausePressed();
                     },
                   ),
                   FlatButton(
-                      child: Text('Start'),
-                      color: Colors.green,
-                      onPressed: () {
-                        _startTimer();
-                      }),
+                    child: Text('Start'),
+                    color: Colors.green,
+                    onPressed: () {
+                      _handleStartPressed();
+                    },
+                  ),
+                  Audio(),
                 ],
               ),
             ],
@@ -84,14 +99,18 @@ class Session extends StatelessWidget {
     );
   }
 
+  void _handleBackPressed() {
+    onBackPressed();
+  }
+
   // Handles the start of the timer
-  _startTimer() {
-    _state.startTimer();
+  void _handleStartPressed() {
+    onStartPressed();
   }
 
   // Handles the pause of the timer
-  _pauseTimer() {
-    _state.pauseTimer();
+  void _handlePausePressed() {
+    onPausePressed();
   }
 
   // Handles the stop of the timer
@@ -117,15 +136,6 @@ class Session extends StatelessWidget {
         ),
       );
     }
-  }
-
-  // Returns the name of the session using the day
-  String _getSessionName() {
-    var day = DateTime.now();
-
-    String dayName = DateFormat('EEEE').format(day);
-
-    return dayName + ' Session';
   }
 }
 
@@ -327,73 +337,14 @@ class ActivityCard extends StatelessWidget {
   }
 }
 
-// Returns Timer Widget
-class TimerCard extends StatefulWidget {
-  final List<ActivityModel> activities;
+class TimerCard extends StatelessWidget {
+  final AnimationController controller;
+  final String timerString;
 
   TimerCard({
-    this.activities,
+    this.controller,
+    this.timerString,
   });
-
-  @override
-  _TimerCardState createState() {
-    _state = _TimerCardState();
-    return _state;
-  }
-}
-
-class _TimerCardState extends State<TimerCard> with TickerProviderStateMixin {
-  AnimationController controller;
-  bool isRunning = false;
-
-  List<int> activityTimes;
-  int activitiesRun;
-  int activitiesTotal;
-
-  String get timerString {
-    Duration duration = controller.duration * controller.value;
-    if (isRunning == true) {
-      return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
-    }
-    return '...';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Create list of activity times
-    activityTimes = widget.activities.map((e) => e.activityTime).toList();
-    activitiesTotal = activityTimes.length;
-
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: activityTimes[0] + 1),
-    );
-
-    controller.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.dismissed) {
-        if (activitiesRun < activitiesTotal) {
-          controller.duration =
-              Duration(seconds: activityTimes[activitiesRun] + 1);
-          controller.reverse(
-              from: controller.value == 0.0 ? 1.0 : controller.value);
-          activitiesRun++;
-        } else {
-          // SESSION COMPLETE
-            isRunning = false;
-          return;
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    isRunning = false;
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -420,11 +371,13 @@ class _TimerCardState extends State<TimerCard> with TickerProviderStateMixin {
                             AnimatedBuilder(
                               animation: controller,
                               builder: (BuildContext context, Widget child) {
-                                return Text(timerString,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 32,
-                                    ));
+                                return Text(
+                                  timerString,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 32,
+                                  ),
+                                );
                               },
                             ),
                           ],
@@ -439,29 +392,6 @@ class _TimerCardState extends State<TimerCard> with TickerProviderStateMixin {
         ),
       ),
     );
-  }
-
-  // Start the timer animation
-  startTimer() {
-    activitiesRun = 1;
-    isRunning = true;
-
-    if (controller.isAnimating) {
-      return;
-      //controller.stop(canceled: true);
-    } else {
-      controller.reverse(
-          from: controller.value == 0.0 ? 1.0 : controller.value);
-    }
-  }
-
-// Pause the timer animation
-  pauseTimer() {
-    if (controller.isAnimating) {
-      controller.stop(canceled: true);
-    } else {
-      return;
-    }
   }
 }
 

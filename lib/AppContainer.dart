@@ -13,6 +13,7 @@ class AppContainer extends StatefulWidget {
 
 class _AppContainerState extends State<AppContainer> {
   AppStateModel appState;
+  ActivityModel activityModel;
 
   @override
   void initState() {
@@ -173,6 +174,25 @@ class _AppContainerState extends State<AppContainer> {
         userFirstTimeUse: false,
         userID: '1',
       );
+    });
+  }
+
+  _handleActiveActivity(int currentIndex) {
+    int lastIndex;
+
+    if (currentIndex == 0) {
+      // First activity
+      setState(() {
+        appState = appState.copyWith(
+          
+        );
+      });
+    } else {
+      // After first activity
+      lastIndex = currentIndex - 1;
+    }
+    setState(() {
+      appState = appState.copyWith();
     });
   }
 }
