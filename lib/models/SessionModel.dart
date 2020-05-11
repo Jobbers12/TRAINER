@@ -1,17 +1,15 @@
-import 'package:trainer/models/ActivityModel.dart';
-
 class SessionModel {
   final String sessionID;
+  final String sessionGoalID; // Foreign Key of the related goal
   final DateTime sessionDate; // The date a session should be completed
-  final bool sessionRunning;
-  final bool sessionComplete; // Has the session been competed?
-  final List<ActivityModel> activities; // List of activities to make up the session
+  final bool sessionIsRunning;
+  final bool sessionIsComplete; // Has the session been competed?
 
   SessionModel({
     this.sessionID,
+    this.sessionGoalID,
     this.sessionDate,
-    this.sessionRunning,
-    this.sessionComplete,
-    this.activities,
+    this.sessionIsRunning,
+    this.sessionIsComplete,
   });
 }

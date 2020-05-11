@@ -7,11 +7,14 @@ import 'package:trainer/styles/Styles.dart';
 
 class SessionsViewer extends StatelessWidget {
   final String goalName;
+
   final List<SessionModel> sessions;
+  final List<ActivityModel> activities;
 
   SessionsViewer({
     this.goalName,
     this.sessions,
+    this.activities,
   });
 
   @override
@@ -64,22 +67,21 @@ class SessionsViewer extends StatelessWidget {
     if (sessions == null) {
       return NoSessionsAvaliable();
     } else {
-      SessionModel activeSessionModel =
-          sessions.firstWhere((s) => s.sessionComplete == false);
+      SessionModel activeSessionModel = sessions.firstWhere((s) => s.sessionIsComplete == false);
 
       return Expanded(
         child: ListView(
           padding: EdgeInsets.all(0.0),
           children: sessions
               .map(
-                (item) => SessionCard(
-                  sessionID: item.sessionID,
-                  sessionDate: item.sessionDate,
+                (e) => SessionCard(
                   goalName: goalName,
-                  activities: item.activities,
+                  sessionID: e.sessionID,
+                  sessionDate: e.sessionDate,
+                  activities: _getActivitiesList(e.sessionID),
                   activeSession: activeSessionModel,
-                  sessionComplete: item.sessionComplete,
-                  sessionRunning: item.sessionRunning,
+                  sessionComplete: e.sessionIsComplete,
+                  sessionRunning: e.sessionIsRunning
                 ),
               )
               .toList(),
@@ -87,11 +89,22 @@ class SessionsViewer extends StatelessWidget {
       );
     }
   }
+
+  //Return list of activities that are apart of the session
+  List<ActivityModel> _getActivitiesList(String sessionID) {
+    List<ActivityModel> newList = activities.where((element) => element.activitySessionID == sessionID).toList();
+
+    if (newList.length == 0) {
+      return <ActivityModel> [];
+    }
+    return newList;
+  }
 }
 
 // SessionCard Widget. Creates a card for each session within a users goal
 class SessionCard extends StatelessWidget {
   final List<ActivityModel> activities;
+
   final DateTime sessionDate;
   final String goalName;
   final SessionModel activeSession;
@@ -182,7 +195,6 @@ class SessionCard extends StatelessWidget {
     int mins = (seconds / 60).round();
 
     double distance = (mins / 6);
-    
 
     return mins.toString() + ' mins | ' + distance.toStringAsFixed(2) + 'km';
   }

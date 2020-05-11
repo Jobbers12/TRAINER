@@ -1,7 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:trainer/models/ActivityModel.dart';
 
 class Audio extends StatefulWidget {
   @override
@@ -22,15 +21,6 @@ class _AudioState extends State<Audio> {
   }
 }
 
-class AudioPlayer {
-  final List<ActivityModel> activitys;
-
-  AudioPlayer({
-    this.activitys,
-  });
-
-
-}
 // await Future.delayed(Duration(seconds: 10))
 
 // setState

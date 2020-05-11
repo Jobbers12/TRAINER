@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/GoalModel.dart';
+import 'package:trainer/models/SessionModel.dart';
 import 'package:trainer/routes/Dashboard.dart';
 import 'package:trainer/routes/Settings.dart';
 import 'package:trainer/routes/Training.dart';
 
 class BottomNavigation extends StatefulWidget {
   final String userName;
+
   final List<GoalModel> goals;
+  final List<SessionModel> sessions;
+  final List<ActivityModel> activities;
 
   BottomNavigation({
     this.userName,
     this.goals,
+    this.sessions,
+    this.activities,
   });
 
   @override
@@ -31,7 +38,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     // List of routes. Indexed for order
     final List<Widget> _children = [
       Dashboard(userName: widget.userName),
-      Training(goals: widget.goals),
+      Training(
+        goals: widget.goals,
+        sessions: widget.sessions,
+        activities: widget.activities,
+      ),
       Settings(),
     ];
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainer/Enums.dart';
+import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/GoalModel.dart';
 import 'package:trainer/models/SessionModel.dart';
 import 'package:trainer/routes/SessionsViewer.dart';
@@ -7,9 +8,13 @@ import 'package:trainer/styles/Styles.dart';
 
 class Training extends StatelessWidget {
   final List<GoalModel> goals;
+  final List<SessionModel> sessions;
+  final List<ActivityModel> activities;
 
   Training({
     this.goals,
+    this.sessions,
+    this.activities,
   });
 
   @override
@@ -33,13 +38,15 @@ class Training extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.all(0.0),
                 children: goals
-                    .map((item) => GoalCard(
-                          goalID: item.goalID,
-                          goalName: item.goalName,
-                          goalType: item.goalType,
-                          goalSubType: item.goalSubType,
-                          sessions: item.sessions,
-                        ))
+                    .map(
+                      (item) => GoalCard(
+                        goalName: item.goalName,
+                        goalType: item.goalType,
+                        goalSubType: item.goalSubType,
+                        sessions: _getSessionsList(item.goalID),
+                        activities: activities,
+                      ),
+                    )
                     .toList(),
               ),
             ),
@@ -47,30 +54,36 @@ class Training extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-         
-        },
+        onPressed: () {},
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
       ),
     );
   }
+
+  // Return list of sessions that are apart of the goal
+  List<SessionModel> _getSessionsList(String goalID) {
+    return sessions.where((e) => e.sessionGoalID == goalID).toList();
+  }
 }
 
 // GoalCard Widget. Creates a card for each goal based on GoalModel
 class GoalCard extends StatelessWidget {
-  final String goalID;
+  final String sessionID;
   final String goalName;
   final GoalType goalType;
   final GoalSubType goalSubType;
+
   final List<SessionModel> sessions;
+  final List<ActivityModel> activities;
 
   GoalCard({
-    this.goalID,
+    this.sessionID,
     this.goalName,
     this.goalType,
     this.goalSubType,
     this.sessions,
+    this.activities,
   });
 
   @override
@@ -81,7 +94,11 @@ class GoalCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SessionsViewer(goalName: goalName, sessions: sessions)
+              builder: (context) => SessionsViewer(
+                goalName: goalName,
+                sessions: sessions,
+                activities: activities,
+              ),
             ),
           );
         },

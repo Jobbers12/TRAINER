@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trainer/AppContainer.dart';
+import 'package:trainer/models/ActivityModel.dart';
 import 'package:trainer/models/GoalModel.dart';
+import 'package:trainer/models/SessionModel.dart';
 import 'package:trainer/navigation/BottomNavigation.dart';
 import 'package:trainer/routes/Onboarding.dart';
 
@@ -25,6 +27,8 @@ class App extends StatelessWidget {
   final String userName;
 
   final List<GoalModel> goals;
+  final List<SessionModel> sessions;
+  final List<ActivityModel> activities;
 
   final bool userFirstTimeUse;
   final dynamic onFirstTimeUse;
@@ -34,6 +38,8 @@ class App extends StatelessWidget {
     this.userFirstTimeUse,
     this.userName,
     this.goals,
+    this.sessions,
+    this.activities,
     this.onFirstTimeUse,
   });
 
@@ -51,7 +57,12 @@ class App extends StatelessWidget {
 
     return Container(
       // EXISTING USER
-      child: BottomNavigation(userName: userName, goals: goals),
+      child: BottomNavigation(
+        userName: userName,
+        goals: goals,
+        sessions: sessions,
+        activities: activities,
+      ),
     );
   }
 }
