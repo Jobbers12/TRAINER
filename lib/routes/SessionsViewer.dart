@@ -67,7 +67,8 @@ class SessionsViewer extends StatelessWidget {
     if (sessions == null) {
       return NoSessionsAvaliable();
     } else {
-      SessionModel activeSessionModel = sessions.firstWhere((s) => s.sessionIsComplete == false);
+      SessionModel activeSessionModel =
+          sessions.firstWhere((s) => s.sessionIsComplete == false);
 
       return Expanded(
         child: ListView(
@@ -75,14 +76,13 @@ class SessionsViewer extends StatelessWidget {
           children: sessions
               .map(
                 (e) => SessionCard(
-                  goalName: goalName,
-                  sessionID: e.sessionID,
-                  sessionDate: e.sessionDate,
-                  activities: _getActivitiesList(e.sessionID),
-                  activeSession: activeSessionModel,
-                  sessionComplete: e.sessionIsComplete,
-                  sessionRunning: e.sessionIsRunning
-                ),
+                    goalName: goalName,
+                    sessionID: e.sessionID,
+                    sessionDate: e.sessionDate,
+                    activities: _getActivitiesList(e.sessionID),
+                    activeSession: activeSessionModel,
+                    sessionComplete: e.sessionIsComplete,
+                    sessionRunning: e.sessionIsRunning),
               )
               .toList(),
         ),
@@ -92,10 +92,12 @@ class SessionsViewer extends StatelessWidget {
 
   //Return list of activities that are apart of the session
   List<ActivityModel> _getActivitiesList(String sessionID) {
-    List<ActivityModel> newList = activities.where((element) => element.activitySessionID == sessionID).toList();
+    List<ActivityModel> newList = activities
+        .where((element) => element.activitySessionID == sessionID)
+        .toList();
 
     if (newList.length == 0) {
-      return <ActivityModel> [];
+      return <ActivityModel>[];
     }
     return newList;
   }
@@ -125,6 +127,10 @@ class SessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _formattedDate = DateFormat('dd/MM/yyyy').format(sessionDate);
+
+    if (activities.length == 0) {
+      return NoActivitiesAvaliable(formattedDate: _formattedDate);
+    }
 
     return Card(
       child: InkWell(
@@ -189,6 +195,9 @@ class SessionCard extends StatelessWidget {
 
   // Returns subText based on time & distance estimate
   String _getSubText(List<ActivityModel> activities) {
+    if (activities.length == 0) {
+      return 'This session has no activities.';
+    }
     List<int> activityTimes = activities.map((e) => e.activityTime).toList();
 
     int seconds = activityTimes.reduce((value, element) => value + element);
@@ -249,6 +258,64 @@ class NoSessionsAvaliable extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// Used if there is no activities within a session
+class NoActivitiesAvaliable extends StatelessWidget {
+  final String formattedDate;
+
+  NoActivitiesAvaliable({
+    this.formattedDate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        color: Colors.red[200],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Icon(Icons.error, size: 40),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          formattedDate.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                        children: [
+                          Text(
+                            'There are not activities within this session.',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.grey[600],
+                            ),
+                          )
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

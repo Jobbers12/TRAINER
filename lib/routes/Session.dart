@@ -115,24 +115,20 @@ class Session extends StatelessWidget {
 
   // Generates a list of activity cards for the selected session. Ensures that there are activities within the session
   _getActivityCardList(List<ActivityModel> activities) {
-    if (activities == null) {
-      return NoActivitiesAvaliable();
-    } else {
-      return Expanded(
-        child: ListView(
-          padding: EdgeInsets.all(0.0),
-          children: activities
-              .map(
-                (activity) => ActivityCard(
-                  activityActive: activity.activityActive,
-                  activityTime: activity.activityTime,
-                  activityType: activity.activityType,
-                ),
-              )
-              .toList(),
-        ),
-      );
-    }
+    return Expanded(
+      child: ListView(
+        padding: EdgeInsets.all(0.0),
+        children: activities
+            .map(
+              (activity) => ActivityCard(
+                activityActive: activity.activityActive,
+                activityTime: activity.activityTime,
+                activityType: activity.activityType,
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }
 

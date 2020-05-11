@@ -28,6 +28,7 @@ class _SessionContainerState extends State<SessionContainer>
   int activitiesTotal;
 
   String get timerString {
+    if (widget.activities.length == 0) { return ''; }
     Duration duration = controller.duration * controller.value;
     if (isRunning == true) {
       return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
@@ -38,6 +39,9 @@ class _SessionContainerState extends State<SessionContainer>
   @override
   void initState() {
     super.initState();
+    if (widget.activities.length == 0) {
+      return;
+    }
     activityTimes = widget.activities.map((e) => e.activityTime).toList();
     activitiesTotal = activityTimes.length;
 
